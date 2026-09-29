@@ -1,0 +1,86 @@
+/* sidebar overlay is only used on mobile */
+.sidebar-overlay { display: none; }
+/* ============================================================
+   CertVerify — Responsive Design
+   ============================================================ */
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  .sidebar { width: 220px; }
+  .auth-right { width: 420px; padding: 40px 36px; }
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  /* Sidebar becomes off-canvas */
+  .sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0; height: 100vh; /* out of the flex row so content uses the full width */
+    transform: translateX(-100%);
+    width: 260px; z-index: 200; visibility: hidden;
+    transition: transform .3s ease, visibility 0s .3s;
+  }
+  .sidebar.open { transform: translateX(0); visibility: visible; transition: transform .3s ease; }
+  .sidebar-overlay.active { display: block; position: fixed; inset: 0; background: rgba(5,11,24,.65); z-index: 150; }
+  .hamburger { display: flex; }
+
+  /* Auth */
+  .auth-page { flex-direction: column; }
+  .auth-left { display: none; }
+  .auth-right { width: 100%; padding: 40px 24px; }
+  .auth-form-header h1 { font-size: 1.6rem; }
+
+  /* Topbar */
+  .topbar { padding: 14px 16px; }
+  .topbar-left h2 { font-size: 0.95rem; }
+  .topbar-left p { display: none; }
+
+  /* Page content */
+  .page-content { padding: 16px; }
+
+  /* Stats */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .stat-card-value { font-size: 1.6rem; }
+
+  /* Quick actions */
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+
+  /* Tables → horizontal scroll */
+  .table-wrapper { border-radius: var(--radius); }
+  table { min-width: 600px; }
+
+  /* Modals */
+  .modal { padding: 24px 20px; }
+  .cert-detail-grid { grid-template-columns: 1fr; }
+
+  /* Issue form */
+  .issue-form-card { padding: 24px 20px; }
+
+  /* Page header */
+  .page-header-row { flex-direction: column; align-items: flex-start; }
+
+  /* Landing */
+  .hero-section { padding: 60px 20px 40px; }
+  .hero-title { font-size: 2.2rem; }
+  .hero-subtitle { font-size: 1rem; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-visual { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .landing-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+  .landing-nav { padding: 16px 20px; }
+  .cta-section { padding: 60px 20px; }
+  .cta-section h2 { font-size: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .quick-actions { grid-template-columns: 1fr 1fr; }
+  .modal { margin: 10px; }
+  .auth-right { padding: 32px 20px; }
+  .cert-success-actions { flex-direction: column; }
+  .cert-success-actions .btn { width: 100%; justify-content: center; }
+  .landing-stats-grid { grid-template-columns: 1fr 1fr; }
+}
+

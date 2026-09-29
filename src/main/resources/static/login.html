@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In – CertVerify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/forms.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap"/>
+  <style>
+    .auth-page { display: flex; min-height: 100vh; background: var(--bg-main); }
+    
+    .auth-left { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px; padding: 40px;
+      background: radial-gradient(ellipse at 30% 20%, rgba(6,182,212,0.14), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(124,58,237,0.16), transparent 55%); }
+    .auth-right { width: 100%; max-width: 500px; flex-shrink: 0; background: var(--bg-sec); display: flex; flex-direction: column; justify-content: center; padding: 48px 40px; border-left: 1px solid var(--border); overflow-y: auto; }
+    .auth-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: #fff; align-self: flex-start; }
+    .auth-brand-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--cyan), var(--violet)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .auth-stage { width: 100%; max-width: 440px; display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+    .mini-cert { background: #fff; color: #0b1a3a; border-radius: 10px; padding: 8px; box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+    .mini-cert-in { border: 2px solid #0b1a3a; padding: 4px; }
+    .mini-cert-in > div { border: 1px solid #b8902f; padding: 18px 20px; text-align: center; display: flex; flex-direction: column; gap: 6px; }
+    .mini-cert small { color: #64748b; font-size: .72rem; font-family: var(--font-main); }
+    .mini-cert h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; letter-spacing: 2px; text-transform: uppercase; }
+    .mini-cert em { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7rem; font-weight: 600; border-bottom: 1px solid #b8902f; align-self: center; padding: 0 16px; }
+    .mini-cert .mc-code { font-family: ui-monospace, Menlo, monospace; font-size: .72rem; color: #475569; }
+    .auth-link { display: flex; align-items: center; gap: 12px; padding: 0 22px; color: var(--text-sec); font-size: .85rem; }
+    .auth-link::before { content: ''; width: 2px; height: 26px; background: linear-gradient(var(--cyan), var(--violet)); border-radius: 2px; }
+    .auth-verified { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 14px; background: rgba(16,185,129,.08); border: 1px solid rgba(16,185,129,.3); }
+    .auth-verified svg { width: 36px; height: 36px; flex-shrink: 0; }
+    .auth-verified circle, .auth-verified path { stroke-dasharray: 130; stroke-dashoffset: 130; animation: draw 1.4s .3s ease forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    .auth-verified strong { display: block; color: #fff; } .auth-verified span { color: var(--text-sec); font-size: .82rem; }
+    .ill-text { font-family: var(--font-display); font-size: clamp(1.6rem, 2.6vw, 2.2rem); font-weight: 700; color: #fff; text-align: center; line-height: 1.2; }
+    .ill-text span { color: var(--cyan-light); }
+    @media (prefers-reduced-motion: reduce) { .auth-verified circle, .auth-verified path { animation: none; stroke-dashoffset: 0; } }
+    @media (max-width: 1024px) { .auth-left { padding: 28px; } .auth-right { max-width: 440px; padding: 40px 32px; } }
+    @media (max-width: 768px) { .auth-left { flex: none; padding: 20px 22px 0; gap: 0; background: none; } .auth-stage, .ill-text { display: none; } .auth-page { min-height: 100vh; flex-direction: column; } .auth-right { max-width: none; border-left: 0; padding: 32px 22px; } }
+    .auth-header { margin-bottom: 30px; }
+    .auth-header h1 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px; color: #fff; }
+    .auth-header p { color: var(--text-sec); }
+    
+        .toggle-link { color: var(--cyan-light); cursor: pointer; font-weight: 600; margin-left: 5px; }
+    .toggle-link:hover { text-decoration: underline; }
+    
+    .form-section { display: none; animation: fadeIn 0.3s ease; }
+    .form-section.active { display: block; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- Left Panel -->
+  <div class="auth-left">
+    <a href="index.html" class="auth-brand"><div class="auth-brand-icon"><i class="fa-solid fa-shield-halved"></i></div>CertVerify</a>
+    <div class="auth-stage" aria-hidden="true">
+      <div class="mini-cert"><div class="mini-cert-in"><div>
+        <small>CertVerify Credential Authority</small>
+        <h3>Certificate</h3>
+        <small>presented to</small>
+        <em>Alex Morgan</em>
+        <small>Full Stack Web Development</small>
+        <span class="mc-code">CRT-2026-001 · VCR-7K2M9QXA</span>
+      </div></div></div>
+      <div class="auth-link">Issued as a digital credential</div>
+      <div class="auth-verified">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="20" r="17"/><path d="M12 20.5l6 6 11-12"/></svg>
+        <div><strong>Verified</strong><span>Authentic and active</span></div>
+      </div>
+    </div>
+    <div class="ill-text">Secure credentials.<br/><span>Trusted verification.</span></div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="auth-right">
+    
+    <!-- Login Form -->
+    <div id="login-section" class="form-section active">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue</p>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-user input-icon"></i>
+            <input type="text" id="username" class="form-control" placeholder="Enter username" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="password" class="form-control" placeholder="Enter password" required/>
+            <button type="button" class="input-toggle" onclick="togglePw('password', 'toggle-pw-icon')">
+              <i class="fa-solid fa-eye" id="toggle-pw-icon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+          <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-sec); cursor:pointer;">
+            <input type="checkbox" id="remember-me" style="accent-color:var(--primary);"/> Remember Me
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="login-btn" style="width: 100%; justify-content: center;">
+          Sign In <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+      
+      <div style="margin-top: 24px; text-align: center; font-size: 0.9rem; color: var(--text-sec);">
+        Don't have an account? <a class="toggle-link" href="register.html">Create New Account</a>
+      </div>
+
+    </div>
+    
+  </div>
+</div>
+<div id="toast-container"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/common.js"></script>
+<script>
+  function togglePw(inputId, iconId) {
+    const pw = document.getElementById(inputId), icon = document.getElementById(iconId);
+    const show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    icon.className = show ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+  }
+  // Already signed in? Go straight to the dashboard (session is never cleared here).
+  if (Auth.isLoggedIn()) window.location.replace("dashboard.html");
+  const remembered = Auth.getRememberedUsername();
+  if (remembered) { document.getElementById("username").value = remembered; document.getElementById("remember-me").checked = true; }
+  if (new URLSearchParams(location.search).get("registered")) Toast.success("Account created. You can sign in now.");
+
+  document.getElementById("login-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const btn = document.getElementById("login-btn");
+    if (!username || !password) return Toast.error("Please enter username and password.");
+    btn.disabled = true; btn.innerHTML = '<div class="spinner spinner-sm"></div>';
+    const result = Auth.login(username, password);
+    if (result.success) {
+      Auth.setRemembered(username, document.getElementById("remember-me").checked);
+      window.location.replace("dashboard.html");
+    } else {
+      Toast.error(result.reason === "not_found" ? "Account not found. Please create a new account." : "Invalid username or password.");
+      btn.disabled = false; btn.innerHTML = 'Sign In <i class="fa-solid fa-arrow-right"></i>';
+    }
+  });
+</script>
+</body>
+</html>

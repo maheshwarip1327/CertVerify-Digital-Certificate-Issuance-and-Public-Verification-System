@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Issue Certificate – CertVerify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <link rel="stylesheet" href="css/forms.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <style>
+    .studio-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    @media (max-width: 900px) { .studio-layout { grid-template-columns: 1fr; } }
+    
+    .cert-preview-card { background: var(--bg-sec); border: 1px solid var(--border); border-radius: 16px; padding: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.4), var(--glow-cyan); position: relative; overflow: hidden; }
+    .cert-preview-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--cyan), var(--violet)); }
+    .cert-p-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+    .cert-p-logo { font-size: 1.5rem; color: var(--cyan); }
+    .cert-p-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-sec); margin-bottom: 4px; }
+    .cert-p-name { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .cert-p-course { font-size: 0.9rem; color: var(--cyan-light); margin-bottom: 30px; font-weight: 500; }
+    .cert-p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 16px; }
+    .cert-p-label { font-size: 0.65rem; color: var(--text-sec); text-transform: uppercase; margin-bottom: 2px; }
+    .cert-p-value { font-family: monospace; font-size: 0.85rem; color: #fff; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="sidebar-logo-text"><div class="sidebar-logo-name">CertVerify</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" data-nav="dashboard" href="dashboard.html"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a class="nav-item" data-nav="courses" href="courses.html"><span class="nav-icon"><i class="fa-solid fa-graduation-cap"></i></span>Courses</a>
+      <a class="nav-item admin-only" data-nav="participants" href="participants.html"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Participants</a>
+      <a class="nav-item" data-nav="certificates" href="certificates.html"><span class="nav-icon"><i class="fa-solid fa-certificate"></i></span>Certificates</a>
+      <a class="nav-item active admin-only" data-nav="issue" href="issue-certificate.html"><span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>Issue Certificate</a>
+      <a class="nav-item" data-nav="verify" href="verify.html"><span class="nav-icon"><i class="fa-solid fa-search"></i></span>Verify Certificate</a>
+      <a class="nav-item" data-nav="statistics" href="statistics.html"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>Statistics</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" data-nav="profile" href="profile.html"><span class="nav-icon"><i class="fa-solid fa-user"></i></span>Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-dropdown hidden" id="sidebar-dropdown">
+        <div class="dropdown-item" id="sidebar-profile-link"><i class="fa-solid fa-user"></i> Profile</div>
+        <div class="dropdown-item danger" id="sidebar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+      </div>
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar"></div>
+        <div class="user-info"><div class="user-name"></div><div class="user-role"></div></div>
+        <i class="fa-solid fa-chevron-up user-dropdown-btn"></i>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+        <h2 id="topbar-greeting">Certificate Studio</h2>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbar-user">
+          <div class="topbar-avatar"></div>
+          <span class="topbar-username">User</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;color:var(--text-sec)"></i>
+          <div class="topbar-dropdown hidden" id="topbar-dropdown">
+            <div class="dropdown-item" id="topbar-profile"><i class="fa-solid fa-user"></i> Profile</div>
+            <div class="dropdown-item danger" id="topbar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <h1>Issue New Credential</h1>
+          <p style="color:var(--text-sec)">Generate secure digital certificates</p>
+        </div>
+      </div>
+
+      <div class="studio-layout">
+        
+        <!-- Left: Form -->
+        <div class="section-card">
+          <div class="section-card-header"><h3 class="section-card-title">Configuration</h3></div>
+          <div class="section-card-body">
+            <form id="issue-form" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="course-select">Course</label>
+                <select id="course-select" class="form-control" required>
+                  <option value="">Loading courses...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="participant-select">Participant</label>
+                <select id="participant-select" class="form-control" required>
+                  <option value="">Loading participants...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="custom-id">Certificate ID</label>
+                <input type="text" id="custom-id" class="form-control" placeholder="e.g. CRT-2026-001" required />
+                <small style="color:var(--text-sec)">Required by the backend and must be unique. The verification code is generated by the server.</small>
+              </div>
+              <div style="margin-top: 30px;">
+                <button type="submit" class="btn btn-primary" id="issue-btn" style="width: 100%; justify-content: center;">
+                  <i class="fa-solid fa-bolt"></i> Generate Credential
+                </button>
+              </div>
+            </form>
+
+            <div id="success-view" class="hidden" style="margin-top: 20px; text-align: center;">
+              <div style="font-size: 2rem; color: var(--green); margin-bottom: 10px;"><i class="fa-solid fa-circle-check"></i></div>
+              <h3 style="margin-bottom: 20px;">Issued Successfully</h3>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-secondary" onclick="navigator.clipboard.writeText(document.getElementById('prev-code').textContent); Toast.success('Copied to clipboard!')"><i class="fa-solid fa-copy"></i> Copy Verification Code</button>
+                <a href="#" id="btn-view-cert" class="btn btn-primary"><i class="fa-solid fa-eye"></i> View Certificate</a>
+                <a href="certificates.html" class="btn btn-secondary"><i class="fa-solid fa-vault"></i> Go to Vault</a>
+                <button class="btn btn-secondary" onclick="resetForm()"><i class="fa-solid fa-plus"></i> Issue Another</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        <!-- Right: Live Preview -->
+        <div>
+          <div style="font-size: 0.85rem; color: var(--text-sec); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 600;">Live Preview</div>
+                    <div class="white-cert" style="transform: scale(0.85); transform-origin: top center; margin-bottom: -50px;">
+            <div class="wc-content">
+              <div class="wc-header">
+                <div class="wc-logo"><i class="fa-solid fa-shield-halved" style="color:#2563eb;"></i> CertVerify</div>
+                <div class="wc-badge" id="prev-status"><i class="fa-solid fa-circle-check"></i> PREVIEW</div>
+              </div>
+              
+              <div class="wc-body">
+                <div class="wc-title">Certificate of Completion</div>
+                <div class="wc-subtitle">This certificate is proudly presented to</div>
+                <div class="wc-name" id="prev-name">Alex Morgan</div>
+                <div class="wc-subtitle">for successfully completing</div>
+                <div class="wc-course" id="prev-course">Select a course...</div>
+              </div>
+              
+              <div class="wc-footer">
+                <div class="wc-meta">
+                  <div>CERTIFICATE ID: <strong id="prev-id">Enter certificate ID</strong></div>
+                  <div style="margin-top:8px;">VERIFICATION CODE: <strong id="prev-code">Generated by server</strong></div>
+                  <div style="margin-top:8px;">ISSUED: <strong>September 28, 2026</strong></div>
+                </div>
+                
+                <div class="wc-seal-container">
+                  <div class="wc-seal"><i class="fa-solid fa-award"></i></div>
+                </div>
+                
+                <div class="wc-signature-block">
+                  <div class="wc-qr"><i class="fa-solid fa-qrcode"></i></div>
+                  <div class="wc-sign-line">
+                    <div class="wc-sign-text">Signature</div>
+                  </div>
+                  <div class="wc-sign-title">Authorized Signature</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js"></script>
+<script src="js/issue-certificate.js"></script>
+</body>
+</html>
+
+
+
+

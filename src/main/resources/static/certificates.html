@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Certificates – CertVerify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <link rel="stylesheet" href="css/forms.css"/>
+  <link rel="stylesheet" href="css/certificate.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="sidebar-logo-text"><div class="sidebar-logo-name">CertVerify</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" data-nav="dashboard" href="dashboard.html"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a class="nav-item" data-nav="courses" href="courses.html"><span class="nav-icon"><i class="fa-solid fa-graduation-cap"></i></span>Courses</a>
+      <a class="nav-item admin-only" data-nav="participants" href="participants.html"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Participants</a>
+      <a class="nav-item active" data-nav="certificates" href="certificates.html"><span class="nav-icon"><i class="fa-solid fa-certificate"></i></span>Certificates</a>
+      <a class="nav-item admin-only" data-nav="issue" href="issue-certificate.html"><span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>Issue Certificate</a>
+      <a class="nav-item" data-nav="verify" href="verify.html"><span class="nav-icon"><i class="fa-solid fa-search"></i></span>Verify Certificate</a>
+      <a class="nav-item" data-nav="statistics" href="statistics.html"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>Statistics</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" data-nav="profile" href="profile.html"><span class="nav-icon"><i class="fa-solid fa-user"></i></span>Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-dropdown hidden" id="sidebar-dropdown">
+        <div class="dropdown-item" id="sidebar-profile-link"><i class="fa-solid fa-user"></i> Profile</div>
+        <div class="dropdown-item danger" id="sidebar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+      </div>
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar"></div>
+        <div class="user-info"><div class="user-name"></div><div class="user-role"></div></div>
+        <i class="fa-solid fa-chevron-up user-dropdown-btn"></i>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+        <h2 id="topbar-greeting">Credential Vault</h2>
+      </div>
+      <div class="topbar-right">
+        <a href="issue-certificate.html" class="btn btn-primary btn-sm admin-only"><i class="fa-solid fa-plus"></i> Issue New</a>
+        <div class="topbar-user" id="topbar-user">
+          <div class="topbar-avatar"></div>
+          <span class="topbar-username">User</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;color:var(--text-sec)"></i>
+          <div class="topbar-dropdown hidden" id="topbar-dropdown">
+            <div class="dropdown-item" id="topbar-profile"><i class="fa-solid fa-user"></i> Profile</div>
+            <div class="dropdown-item danger" id="topbar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <h1>Certificates</h1>
+          <p style="color:var(--text-sec)">Secure registry of all issued credentials</p>
+        </div>
+        <div class="search-bar" style="margin-left:auto"><i class="fa-solid fa-search"></i><input type="search" id="search-input" class="form-control" placeholder="Search ID, code or name…" aria-label="Search"/></div>
+        <select id="filter-status" class="form-control" style="width:auto; padding: 10px 40px 10px 16px;">
+          <option value="">All Status</option>
+          <option value="ACTIVE">Active</option>
+          <option value="REVOKED">Revoked</option>
+        </select>
+      </div>
+
+      <div class="section-card"><div class="table-scroll" id="data-grid"></div></div>
+    </main>
+  </div>
+</div>
+
+<!-- View Modal -->
+<div class="modal-overlay hidden" id="view-modal">
+  <div class="modal" style="max-width:900px">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fa-solid fa-certificate"></i> Certificate</h3>
+      <button class="modal-close" onclick="Modal.close('view-modal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="view-body"></div>
+  </div>
+</div>
+
+<!-- Revoke Modal -->
+<div class="modal-overlay hidden" id="revoke-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" style="color:var(--red)"><i class="fa-solid fa-ban"></i> Revoke Certificate</h3>
+      <button class="modal-close" onclick="Modal.close('revoke-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p style="color:var(--text-sec); margin-bottom: 20px;">This action marks the credential as invalid publicly. Cannot be undone.</p>
+    <form id="revoke-form" novalidate>
+      <input type="hidden" id="revoke-cert-id"/>
+      <div class="form-group">
+        <label class="form-label" for="revoke-reason">Reason for Revocation</label>
+        <textarea id="revoke-reason" class="form-control" required placeholder="e.g. Duplicate credential..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="Modal.close('revoke-modal')">Cancel</button>
+        <button type="submit" class="btn btn-danger" id="revoke-submit-btn">Revoke Certificate</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js"></script>
+<script src="js/certificate.js"></script>
+<script src="js/certificates.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Command Center – CertVerify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <link rel="stylesheet" href="css/forms.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="sidebar-logo-text">
+        <div class="sidebar-logo-name">CertVerify</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-nav="dashboard" href="dashboard.html"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a class="nav-item" data-nav="courses" href="courses.html"><span class="nav-icon"><i class="fa-solid fa-graduation-cap"></i></span>Courses</a>
+      <a class="nav-item admin-only" data-nav="participants" href="participants.html"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Participants</a>
+      <a class="nav-item" data-nav="certificates" href="certificates.html"><span class="nav-icon"><i class="fa-solid fa-certificate"></i></span>Certificates</a>
+      <a class="nav-item admin-only" data-nav="issue" href="issue-certificate.html"><span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>Issue Certificate</a>
+      <a class="nav-item" data-nav="verify" href="verify.html"><span class="nav-icon"><i class="fa-solid fa-search"></i></span>Verify Certificate</a>
+      <a class="nav-item" data-nav="statistics" href="statistics.html"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>Statistics</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" data-nav="profile" href="profile.html"><span class="nav-icon"><i class="fa-solid fa-user"></i></span>Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-dropdown hidden" id="sidebar-dropdown">
+        <div class="dropdown-item" id="sidebar-profile-link"><i class="fa-solid fa-user"></i> Profile</div>
+        <div class="dropdown-item danger" id="sidebar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+      </div>
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar"></div>
+        <div class="user-info"><div class="user-name"></div><div class="user-role"></div></div>
+        <i class="fa-solid fa-chevron-up user-dropdown-btn"></i>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+        <div class="topbar-left">
+          <h2 id="topbar-greeting">Dashboard</h2>
+          <p>CertVerify</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="issue-certificate.html" class="btn btn-primary btn-sm admin-only"><i class="fa-solid fa-plus"></i> Issue certificate</a>
+        <div class="topbar-user" id="topbar-user">
+          <div class="topbar-avatar"></div>
+          <span class="topbar-username"></span>
+          <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;color:var(--text-sec)"></i>
+          <div class="topbar-dropdown hidden" id="topbar-dropdown">
+            <div class="dropdown-item" id="topbar-profile"><i class="fa-solid fa-user"></i> Profile</div>
+            <div class="dropdown-item danger" id="topbar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- ADMIN: system-wide statistics -->
+      <section id="admin-view" class="hidden">
+        <div class="page-header"><div><h1>System overview</h1><p class="page-sub">Every course, participant and certificate in the registry.</p></div></div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(6,182,212,0.15);color:var(--cyan)"><i class="fa-solid fa-graduation-cap"></i></div><div class="stat-details"><div class="stat-value" id="dash-courses">0</div><div class="stat-label">Total Courses</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(124,58,237,0.15);color:var(--violet-light)"><i class="fa-solid fa-users"></i></div><div class="stat-details"><div class="stat-value" id="dash-participants">0</div><div class="stat-label">Total Participants</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(26,86,219,0.15);color:var(--blue-light)"><i class="fa-solid fa-certificate"></i></div><div class="stat-details"><div class="stat-value" id="dash-certs">0</div><div class="stat-label">Total Certificates</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="stat-details"><div class="stat-value" id="dash-active">0</div><div class="stat-label">Active Certificates</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(239,68,68,0.15);color:var(--red)"><i class="fa-solid fa-ban"></i></div><div class="stat-details"><div class="stat-value" id="dash-revoked">0</div><div class="stat-label">Revoked Certificates</div></div></div>
+        </div>
+        <div class="dash-cols">
+          <div class="section-card">
+            <div class="section-card-header"><h3 class="section-card-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--cyan);margin-right:8px"></i>Recent certificates</h3><a href="certificates.html" class="btn btn-secondary btn-sm">View all</a></div>
+            <div class="table-scroll"><table class="data-table"><thead><tr><th>Certificate</th><th>Status</th><th>Issued</th><th></th></tr></thead><tbody id="dash-recent-tbody"></tbody></table></div>
+          </div>
+          <div class="section-card" id="course-participation">
+            <div class="section-card-header"><h3 class="section-card-title"><i class="fa-solid fa-diagram-project" style="color:var(--cyan);margin-right:8px"></i>Courses</h3><a href="courses.html" class="btn btn-secondary btn-sm">Manage</a></div>
+            <div class="section-card-body" id="course-participation-body"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- USER: personal view. Certificate ownership is NOT available from the backend (see BACKEND_OWNERSHIP_PATCH.md). -->
+      <section id="user-view" class="hidden">
+        <div class="page-header"><div><h1 id="user-welcome">Welcome</h1><p class="page-sub">Your CertVerify account</p></div></div>
+        <div class="dash-cols user-cols">
+          <div class="section-card">
+            <div class="section-card-header"><h3 class="section-card-title"><i class="fa-solid fa-certificate" style="color:var(--cyan);margin-right:8px"></i>My certificates</h3></div>
+            <div class="section-card-body">
+              <div class="notice"><i class="fa-solid fa-circle-info"></i>
+                <div><strong>Your personal certificate history isn't available yet.</strong>
+                <p>The server doesn't yet record which certificates belong to which account, so CertVerify can't safely show your totals, or hide other people's certificates. Showing anything here would be guesswork, so it shows nothing instead.</p>
+                <p>You can still view and print any certificate you hold the verification code for.</p></div></div>
+              <form id="quick-verify" class="inline-form" novalidate>
+                <input id="quick-code" class="form-control" placeholder="Verification code, e.g. VCR-XXXXXXXX" aria-label="Verification code" autocomplete="off"/>
+                <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Verify &amp; view</button>
+              </form>
+            </div>
+          </div>
+          <div class="section-card">
+            <div class="section-card-header"><h3 class="section-card-title"><i class="fa-solid fa-id-badge" style="color:var(--cyan);margin-right:8px"></i>Account</h3></div>
+            <div class="section-card-body">
+              <div class="acct"><div class="acct-av" id="acct-av"></div><div><strong id="acct-name"></strong><small id="acct-user"></small></div></div>
+              <div class="acct-actions"><a class="btn btn-secondary btn-sm" href="profile.html"><i class="fa-solid fa-user"></i> Profile</a><a class="btn btn-secondary btn-sm" href="profile.html#password"><i class="fa-solid fa-key"></i> Change password</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

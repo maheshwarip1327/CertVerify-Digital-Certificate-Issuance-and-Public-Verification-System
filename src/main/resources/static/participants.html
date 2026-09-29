@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Participants – CertVerify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <link rel="stylesheet" href="css/forms.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="sidebar-logo-text"><div class="sidebar-logo-name">CertVerify</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" data-nav="dashboard" href="dashboard.html"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a class="nav-item" data-nav="courses" href="courses.html"><span class="nav-icon"><i class="fa-solid fa-graduation-cap"></i></span>Courses</a>
+      <a class="nav-item active admin-only" data-nav="participants" href="participants.html"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Participants</a>
+      <a class="nav-item" data-nav="certificates" href="certificates.html"><span class="nav-icon"><i class="fa-solid fa-certificate"></i></span>Certificates</a>
+      <a class="nav-item admin-only" data-nav="issue" href="issue-certificate.html"><span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>Issue Certificate</a>
+      <a class="nav-item" data-nav="verify" href="verify.html"><span class="nav-icon"><i class="fa-solid fa-search"></i></span>Verify Certificate</a>
+      <a class="nav-item" data-nav="statistics" href="statistics.html"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>Statistics</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" data-nav="profile" href="profile.html"><span class="nav-icon"><i class="fa-solid fa-user"></i></span>Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-dropdown hidden" id="sidebar-dropdown">
+        <div class="dropdown-item" id="sidebar-profile-link"><i class="fa-solid fa-user"></i> Profile</div>
+        <div class="dropdown-item danger" id="sidebar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+      </div>
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar"></div>
+        <div class="user-info"><div class="user-name"></div><div class="user-role"></div></div>
+        <i class="fa-solid fa-chevron-up user-dropdown-btn"></i>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+        <h2 id="topbar-greeting">Digital Identity Directory</h2>
+      </div>
+      <div class="topbar-right">
+        <a href="issue-certificate.html" class="btn btn-primary btn-sm admin-only"><i class="fa-solid fa-plus"></i> Issue New</a>
+        <div class="topbar-user" id="topbar-user">
+          <div class="topbar-avatar"></div>
+          <span class="topbar-username">User</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;color:var(--text-sec)"></i>
+          <div class="topbar-dropdown hidden" id="topbar-dropdown">
+            <div class="dropdown-item" id="topbar-profile"><i class="fa-solid fa-user"></i> Profile</div>
+            <div class="dropdown-item danger" id="topbar-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <h1>Participants</h1>
+          <p style="color:var(--text-sec)">Manage participant profiles</p>
+        </div>
+        <button class="btn btn-primary admin-only" id="btn-add-participant"><i class="fa-solid fa-plus"></i> Add Participant</button>
+      </div>
+
+      <div class="toolbar"><div class="search-bar"><i class="fa-solid fa-search"></i><input type="search" id="search-input" class="form-control" placeholder="Search participants by name or email…" aria-label="Search"/></div></div>
+
+      <div id="data-grid" class="grid-layout">
+        <!-- Cards will render here -->
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay hidden" id="participant-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="participant-modal-title">Add Participant</h3>
+      <button class="modal-close" onclick="Modal.close('participant-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="participant-form" novalidate>
+      <input type="hidden" id="participant-id"/>
+      <div class="form-group">
+        <label class="form-label" for="participant-name">Full Name</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-user input-icon"></i>
+          <input type="text" id="participant-name" class="form-control" placeholder="e.g. Alex Morgan" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="participant-email">Email Address</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-envelope input-icon"></i>
+          <input type="email" id="participant-email" class="form-control" placeholder="e.g. alex@example.com" required/>
+        </div>
+      </div>
+      <p class="modal-note"><i class="fa-solid fa-circle-info"></i> A participant is linked to a course when a certificate is issued. The backend stores no course on the participant itself.</p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="Modal.close('participant-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="participant-submit-btn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js"></script>
+<script src="js/participants.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CertVerify – Digital credentials you can trust</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/certificate.css"/>
+  <link rel="stylesheet" href="css/landing.css"/>
+</head>
+<body class="lp">
+<header class="lp-nav">
+  <div class="lp-wrap">
+    <div class="lp-nav-row">
+      <a href="index.html" class="lp-brand"><i class="fa-solid fa-shield-halved"></i>CertVerify</a>
+      <nav class="lp-links" aria-label="Primary"><a href="#how">How it works</a><a href="#features">Features</a><a href="#verify">Verify</a><a href="#preview">Certificate</a></nav>
+      <div class="lp-cta">
+        <a href="verify.html" class="btn btn-secondary btn-sm">Verify a certificate</a>
+        <a href="login.html" class="btn btn-primary btn-sm">Sign in</a>
+        <button class="lp-burger" id="lp-burger" aria-label="Open menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+    <nav class="lp-mobile" id="lp-mobile" aria-label="Mobile">
+      <a href="#how">How it works</a><a href="#features">Features</a><a href="#verify">Verify</a><a href="#preview">Certificate</a>
+      <a href="verify.html">Verify a certificate</a>
+      <a href="login.html" class="btn btn-primary">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="lp-hero">
+    <div class="lp-wrap lp-hero-grid">
+      <div>
+        <h1>Credentials that <span>prove themselves.</span></h1>
+        <p class="lp-sub">Issue certificates as digital credentials. Anyone can check them in seconds, and a revoked one never passes.</p>
+        <div class="lp-btns">
+          <a href="login.html" class="btn btn-primary btn-lg"><i class="fa-solid fa-right-to-bracket"></i> Sign in</a>
+          <a href="verify.html" class="btn btn-secondary btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Verify a certificate</a>
+        </div>
+        <div class="lp-flow" aria-label="Create, issue, verify, trust"><b>Create</b><i class="fa-solid fa-chevron-right sep"></i><b>Issue</b><i class="fa-solid fa-chevron-right sep"></i><b>Verify</b><i class="fa-solid fa-chevron-right sep"></i><b>Trust</b></div>
+      </div>
+      <div class="lp-stage">
+        <div id="hero-cert"></div>
+        <div class="lp-chain">
+          <div class="lp-chip"><i class="fa-solid fa-fingerprint"></i><div><strong>Digital credential</strong><small>VCR-7K2M9QXA</small></div></div>
+          <div class="lp-chip"><svg class="lp-tick" width="38" height="38" viewBox="0 0 40 40" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M12 20.5l6 6 11-12"/></svg><div><strong>Verified</strong><small>Authentic and active</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-sec" id="how">
+    <div class="lp-wrap">
+      <div class="lp-head"><h2>From course to trusted credential in four steps</h2></div>
+      <div class="lp-steps">
+        <div class="lp-step"><i class="fa-solid fa-graduation-cap"></i><h3>Create</h3><p>Set up a course once and add participants to it.</p></div>
+        <div class="lp-step"><i class="fa-solid fa-stamp"></i><h3>Issue</h3><p>Issue a certificate with its own ID and verification code.</p></div>
+        <div class="lp-step"><i class="fa-solid fa-magnifying-glass-chart"></i><h3>Verify</h3><p>Anyone checks the code on the public verification page.</p></div>
+        <div class="lp-step"><i class="fa-solid fa-shield-heart"></i><h3>Trust</h3><p>Revoked credentials fail verification straight away.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-sec alt" id="features">
+    <div class="lp-wrap">
+      <div class="lp-head"><h2>Everything a credential needs</h2><p>Built for institutions that issue certificates and the people who rely on them.</p></div>
+      <div class="lp-feats">
+        <div class="lp-feat"><i class="fa-solid fa-hashtag"></i><h3>Unique IDs and codes</h3><p>Every certificate has its own ID and a generated verification code.</p></div>
+        <div class="lp-feat"><i class="fa-solid fa-globe"></i><h3>Public verification</h3><p>No account needed to check a certificate.</p></div>
+        <div class="lp-feat"><i class="fa-solid fa-ban"></i><h3>Instant revocation</h3><p>Revoke with a reason and the change shows up on the next check.</p></div>
+        <div class="lp-feat"><i class="fa-solid fa-print"></i><h3>Print-ready</h3><p>A clean landscape certificate, ready for paper or Save as PDF.</p></div>
+        <div class="lp-feat"><i class="fa-solid fa-clock-rotate-left"></i><h3>Verification history</h3><p>Each successful lookup is recorded against the certificate.</p></div>
+        <div class="lp-feat"><i class="fa-solid fa-user-shield"></i><h3>Admin and member roles</h3><p>Administrators manage records; members have a limited view.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-sec" id="verify">
+    <div class="lp-wrap lp-split">
+      <div>
+        <div class="lp-head" style="margin-bottom:0"><h2>Check a certificate in seconds</h2><p>Enter the verification code printed on the certificate. You'll see who it was issued to, for which course, and whether it is still valid.</p></div>
+        <form class="lp-verify-form" id="lp-verify" novalidate>
+          <input id="lp-code" placeholder="VCR-XXXXXXXX" aria-label="Verification code" autocomplete="off"/>
+          <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Verify</button>
+        </form>
+      </div>
+      <div class="lp-result" aria-label="Sample verification result">
+        <h3><i class="fa-solid fa-circle-check"></i> Certificate verified</h3>
+        <p>Certificate is authentic and active.</p>
+        <dl><div><dt>Recipient</dt><dd>Alex Morgan</dd></div><div><dt>Course</dt><dd>Full Stack Web Development</dd></div><div><dt>Certificate ID</dt><dd>CRT-2026-001</dd></div><div><dt>Issued</dt><dd>12 March 2026</dd></div></dl>
+        <span class="lp-tag">Sample result</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-sec alt" id="preview">
+    <div class="lp-wrap">
+      <div class="lp-head"><h2>The certificate, as it prints</h2><p>The preview you see on screen is the same design that goes to paper.</p></div>
+      <div class="lp-preview"><div id="preview-cert" style="width:100%;max-width:900px"></div></div>
+    </div>
+  </section>
+
+  <section class="lp-sec">
+    <div class="lp-wrap">
+      <div class="lp-head"><h2>Why it earns trust</h2></div>
+      <div class="lp-trust">
+        <div><h3>Institutions</h3><p>Issue from one registry and keep a single record of every course.</p></div>
+        <div><h3>Employers</h3><p>Confirm a claim yourself instead of asking for a scan.</p></div>
+        <div><h3>Learners</h3><p>Hold a credential that can be checked and printed whenever needed.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lp-wrap">
+    <section class="lp-final">
+      <h2>Ready to issue credentials people can rely on?</h2>
+      <p>Sign in to manage courses, participants and certificates.</p>
+      <div class="lp-btns"><a href="login.html" class="btn btn-primary btn-lg">Sign in</a><a href="register.html" class="btn btn-secondary btn-lg">Create account</a></div>
+    </section>
+  </div>
+</main>
+
+<footer class="lp-foot">
+  <div class="lp-wrap lp-foot-row">
+    <span>&copy; 2026 CertVerify</span>
+    <nav aria-label="Footer"><a href="verify.html">Verify</a><a href="login.html">Sign in</a><a href="register.html">Create account</a></nav>
+  </div>
+</footer>
+
+<script src="js/certificate.js"></script>
+<script>
+  const sample = { name: "Alex Morgan", course: "Full Stack Web Development", certificateId: "CRT-2026-001", verificationCode: "VCR-7K2M9QXA", issuedAt: "2026-03-12T10:00:00", status: "ACTIVE" };
+  document.getElementById("hero-cert").innerHTML = CertView.render(sample);
+  document.getElementById("preview-cert").innerHTML = CertView.render(sample);
+  const burger = document.getElementById("lp-burger"), menu = document.getElementById("lp-mobile");
+  burger.addEventListener("click", () => { const open = menu.classList.toggle("open"); burger.setAttribute("aria-expanded", open); });
+  menu.addEventListener("click", (e) => { if (e.target.closest("a")) menu.classList.remove("open"); });
+  document.getElementById("lp-verify").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const c = document.getElementById("lp-code").value.trim();
+    location.href = "verify.html" + (c ? "?code=" + encodeURIComponent(c) : "");
+  });
+</script>
+</body>
+</html>

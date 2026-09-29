@@ -1,0 +1,68 @@
+/* CertVerify certificate — one design used for preview AND print.
+   Everything is sized in cqw (container width) so the preview is a true scale model of the printed page. */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,600&family=Inter:wght@400;500;600&display=swap');
+
+.cert-frame { container-type: inline-size; width: 100%; background: #fff; color: #1e293b;
+  border-radius: 4px; overflow: hidden; box-shadow: 0 18px 50px rgba(2,6,23,.45); }
+.cert { aspect-ratio: 297 / 210; display: flex; padding: 2.2cqw; background: #fff; }
+.cert-outer { flex: 1; min-width: 0; display: flex; border: .45cqw solid #0b1a3a; padding: .7cqw; }
+.cert-inner { flex: 1; min-width: 0; border: .15cqw solid #b8902f; padding: 2cqw 3.4cqw 1.8cqw; display: flex; flex-direction: column; text-align: center;
+  background-image: radial-gradient(circle at 50% 52%, rgba(184,144,47,.07) 0, rgba(184,144,47,.07) 16cqw, transparent 16.2cqw),
+                    repeating-radial-gradient(circle at 50% 52%, transparent 0, transparent 1.2cqw, rgba(11,26,58,.025) 1.25cqw, rgba(11,26,58,.025) 1.3cqw); }
+.cert-head { display: flex; justify-content: space-between; align-items: center; gap: 2cqw; }
+.cert-brand { display: flex; align-items: center; gap: .8cqw; font: 700 1.9cqw/1 'Space Grotesk', 'Inter', sans-serif; color: #0b1a3a; }
+.cert-brand svg { width: 2.4cqw; height: 2.4cqw; }
+.cert-status { font: 600 1.05cqw/1 'Inter', sans-serif; letter-spacing: .12cqw; text-transform: uppercase; padding: .6cqw 1.3cqw; border-radius: 99cqw;
+  background: #ecfdf5; color: #047857; border: .12cqw solid #10b981; white-space: nowrap; }
+.cert-status.is-revoked { background: #fef2f2; color: #b91c1c; border-color: #ef4444; }
+.cert-main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 0; }
+.cert-title { font: 700 4.4cqw/1.05 'Cormorant Garamond', Georgia, serif; color: #0b1a3a; letter-spacing: .25cqw; text-transform: uppercase; }
+.cert-line { font: italic 500 1.7cqw/1.3 'Cormorant Garamond', Georgia, serif; color: #475569; margin-top: 1.6cqw; }
+.cert-name { font: italic 600 5.4cqw/1.15 'Cormorant Garamond', Georgia, serif; color: #0b1a3a; margin-top: .8cqw; padding: 0 4cqw .5cqw; border-bottom: .15cqw solid #b8902f; max-width: 100%; overflow-wrap: anywhere; }
+.cert-course { font: 700 2.4cqw/1.2 'Cormorant Garamond', Georgia, serif; color: #1e3a8a; margin-top: .8cqw; letter-spacing: .1cqw; max-width: 100%; overflow-wrap: anywhere; }
+.cert-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 2cqw; }
+.cert-meta { text-align: left; font: 400 1.05cqw/1.7 'Inter', sans-serif; color: #64748b; }
+.cert-meta b { color: #0f172a; font-weight: 600; font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .03cqw; overflow-wrap: anywhere; }
+.cert-seal { width: 9cqw; height: 9cqw; display: block; }
+.cert-sign { text-align: center; font: 400 1cqw/1.4 'Inter', sans-serif; color: #64748b; }
+.cert-sign .sig-line { border-top: .12cqw solid #0b1a3a; margin: 3.4cqw 0 .5cqw; }
+.cert-sign strong { display: block; color: #0b1a3a; font-weight: 600; }
+.cert-verify { margin-top: 1.2cqw; padding-top: 1cqw; border-top: .1cqw dashed #cbd5e1; font: 400 .95cqw/1.4 'Inter', sans-serif; color: #64748b; overflow-wrap: anywhere; }
+.cert-revoked-note { font: 500 1.1cqw/1.4 'Inter', sans-serif; color: #b91c1c; margin-top: 1.2cqw; }
+
+/* Narrow containers (phones): stop scaling text down to nothing — let the certificate grow taller instead. */
+@container (max-width: 560px) {
+  .cert { aspect-ratio: auto; padding: 10px; }
+  .cert-inner { padding: 14px 14px 12px; }
+  .cert-brand { font-size: 15px; gap: 6px; } .cert-brand svg { width: 20px; height: 20px; }
+  .cert-status { font-size: 10px; padding: 5px 10px; letter-spacing: 1px; }
+  .cert-main { padding: 18px 0; }
+  .cert-title { font-size: 26px; letter-spacing: 2px; }
+  .cert-line { font-size: 15px; margin-top: 12px; }
+  .cert-name { font-size: 32px; padding: 0 8px 4px; }
+  .cert-course { font-size: 19px; }
+  .cert-foot { grid-template-columns: 1fr; justify-items: center; gap: 14px; }
+  .cert-meta { text-align: center; font-size: 11px; }
+  .cert-seal { width: 72px; height: 72px; }
+  .cert-sign { font-size: 11px; width: 70%; } .cert-sign .sig-line { margin-top: 22px; }
+  .cert-verify { font-size: 10px; margin-top: 12px; padding-top: 10px; }
+  .cert-revoked-note { font-size: 12px; }
+}
+
+/* ---------- Certificate viewer chrome (screen only) ---------- */
+.cert-viewer { display: flex; flex-direction: column; gap: 16px; }
+.cert-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; align-items: center; }
+.cert-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; color: var(--text-sec); font-size: .85rem; }
+.cert-facts strong { display: block; color: #fff; font-weight: 600; word-break: break-word; }
+
+/* ---------- Print ---------- */
+#print-root { display: none; }
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; height: auto !important; overflow: visible !important; }
+  body.printing > *:not(#print-root) { display: none !important; }
+  body.printing #print-root { display: block !important; width: 297mm; height: 209mm; overflow: hidden; break-inside: avoid; page-break-inside: avoid; }
+  body.printing #print-root .cert-frame { width: 297mm; height: 209mm; border-radius: 0; box-shadow: none; }
+  body.printing #print-root .cert { aspect-ratio: auto; height: 209mm; }
+  body.printing #print-root * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
